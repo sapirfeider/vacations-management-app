@@ -5,10 +5,11 @@ const loginRoute = require("./routes/login/index")
 const vacationsRoute = require("./routes/vacations/index")
 require("dotenv").config()
 
+
 const api = express();
 // api.use(cors());
 
-api.use(express.static("public"))
+api.use(express.static('./public'))
 
 api.use(bodyParser.json())
 
@@ -19,6 +20,14 @@ api.get("/check", (req, res, next) => {
 
 api.use("/auth", loginRoute)
 api.use("/vacations", vacationsRoute)
+
+api.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.js'), err => {
+        if (err) {
+            res.status(500).send(err)
+        }
+    })
+});
 
 api.use((error, req, res, next) => {
     console.log("error details:", error)
