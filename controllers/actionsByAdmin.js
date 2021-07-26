@@ -1,9 +1,10 @@
 const getConnection = require("../database/connectDB")
+require("dotenv").config()
 const moment = require("moment")
 
 async function addVacaction(body) {
     const { destination, description, image, check_in_date, check_out_date, price } = body;
-    const addVacationQuery = `INSERT INTO vacation_db.vacations_list (description, destination, image, check_in_date, check_out_date, price)
+    const addVacationQuery = `INSERT INTO ${process.env.SCHEMA}.vacations_list (description, destination, image, check_in_date, check_out_date, price)
      VALUES (?, ?, ?, ?, ?, ?)`
     const connection = await getConnection();
     const [rows] = await connection.execute(addVacationQuery, [destination, description, image, check_in_date, check_out_date, price])
@@ -12,7 +13,7 @@ async function addVacaction(body) {
 }
 
 async function deleteVacation(vacation_id) {
-    const delVacationQuery = 'DELETE FROM `vacation_db`.`vacations_list` WHERE (`id` = ?)'
+    const delVacationQuery = `DELETE FROM ${process.env.SCHEMA}.vacations_list WHERE (id = ?)`
     const connection = await getConnection();
     const [rows] = await connection.execute(delVacationQuery, [vacation_id])
     console.log(rows)
@@ -23,7 +24,7 @@ async function updateVacation(body) {
     const { id, description, destination, image, check_in_date, check_out_date, price } = body
     const checkIn = moment(check_in_date).format("YYYY-MM-DD")
     const checkOut = moment(check_out_date).format("YYYY-MM-DD")
-    const updateQuery = `UPDATE vacation_db.vacations_list SET description = ?, destination = ?, image = ? ,
+    const updateQuery = `UPDATE ${process.env.SCHEMA}.vacations_list SET description = ?, destination = ?, image = ? ,
     check_in_date = ?, check_out_date = ?, price = ? WHERE (id = ?)`
     const connection = await getConnection();
     const [rows] = await connection.execute(updateQuery, [description, destination, image, checkIn, checkOut, price, id])
