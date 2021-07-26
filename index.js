@@ -7,8 +7,10 @@ require("dotenv").config()
 const api = express();
 // api.use(cors());
 
-api.use(express.static('./public'))
+const path = require('path');
 
+//api.use(express.static('./public'))
+api.use(express.static(path.join(__dirname, 'build')));
 api.use(bodyParser.json())
 
 
@@ -19,13 +21,17 @@ api.get("/check", (req, res, next) => {
 api.use("/auth", loginRoute)
 api.use("/vacations", vacationsRoute)
 
+// api.get('/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, './build/index.js'), err => {
+//         if (err) {
+//             res.status(500).send(err)
+//         }
+//     })
+// });
+
 api.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.js'), err => {
-        if (err) {
-            res.status(500).send(err)
-        }
-    })
-});
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 
 
 api.use((error, req, res, next) => {
