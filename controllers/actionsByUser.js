@@ -11,48 +11,48 @@ async function getVacations(user_id) {
        ${process.env.SCHEMA}.followers ON vacations_list.id = followers.vacation_id
         AND followers.user_id = ?
         order by followers.user_id = ? desc`
-    const connection = await getConnection();
-    const [rows] = await connection.execute(getVacationsQuery, [user_id, user_id])
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(getVacationsQuery, [user_id, user_id])
     console.log(rows)
     return rows;
 }
 
 async function followVacation(user_id, vacation_id) {
     const followVacationQuery = `INSERT INTO ${process.env.SCHEMA}.followers (user_id, vacation_id) VALUES (?, ?)`
-    const connection = await getConnection();
-    const [rows] = await connection.execute(followVacationQuery, [user_id, vacation_id])
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(followVacationQuery, [user_id, vacation_id])
     console.log(rows)
     return rows.affectedRows;
 }
 
 async function updateFollowersCounterUp(vacation_id) {
     const updateCountFollowers = `UPDATE ${process.env.SCHEMA}.vacations_list SET followers_number = followers_number+1 WHERE (id = ?)`
-    const connection = await getConnection();
-    const [rows] = await connection.execute(updateCountFollowers, [vacation_id])
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(updateCountFollowers, [vacation_id])
     console.log(rows)
     return rows.affectedRows;
 }
 
 async function updateFollowersCounterDown(vacation_id) {
     const updateCountFollowers = `UPDATE ${process.env.SCHEMA}.vacations_list SET followers_number = followers_number-1 WHERE (id = ?)`
-    const connection = await getConnection();
-    const [rows] = await connection.execute(updateCountFollowers, [vacation_id])
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(updateCountFollowers, [vacation_id])
     console.log(rows)
     return rows.affectedRows;
 }
 
 async function unfollowVacation(user_id, vacation_id) {
     const unfollowVacationQuery = `DELETE FROM ${process.env.SCHEMA}.followers WHERE (user_id = ? and vacation_id = ?);`
-    const connection = await getConnection();
-    const [rows] = await connection.execute(unfollowVacationQuery, [user_id, vacation_id])
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(unfollowVacationQuery, [user_id, vacation_id])
     console.log(rows)
     return rows.affectedRows;
 }
 
 async function vacationsByDate() {
     const getVacationsQuery = `SELECT * FROM ${process.env.SCHEMA}.vacations_list order by check_in_date`
-    const connection = await getConnection();
-    const [rows] = await connection.execute(getVacationsQuery)
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(getVacationsQuery)
     console.log(rows)
     return rows;
 

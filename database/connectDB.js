@@ -9,6 +9,8 @@ async function ConnectToDB() {
             password: process.env.PASSWORD,
             port: process.env.PORT_DB,
             connectionLimit: process.env.CONNECTIONLIMIT,
+            waitForConnections: true,
+            queueLimit: 0,
             database: process.env.SCHEMA
         });
         return connection

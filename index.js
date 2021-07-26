@@ -6,13 +6,21 @@ const vacationsRoute = require("./routes/vacations/index")
 require("dotenv").config()
 const api = express();
 // api.use(cors());
-
 const path = require('path');
+const getConnection = require("./database/connectDB")
+
+global.__basedir = __dirname;
+
+initConnection()
+
+async function initConnection(){
+    global.connection = await getConnection();
+}
+
+api.use(bodyParser.json())
 
 //api.use(express.static('./public'))
 api.use(express.static(path.join(__dirname, 'build')));
-api.use(bodyParser.json())
-
 
 api.get("/check", (req, res, next) => {
     return res.send("check success!")
