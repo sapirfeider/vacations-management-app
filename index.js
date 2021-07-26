@@ -4,8 +4,6 @@ const cors = require("cors")
 const loginRoute = require("./routes/login/index")
 const vacationsRoute = require("./routes/vacations/index")
 require("dotenv").config()
-
-
 const api = express();
 // api.use(cors());
 
@@ -28,6 +26,7 @@ api.get('/*', (req, res) => {
         }
     })
 });
+
 
 api.use((error, req, res, next) => {
     console.log("error details:", error)
