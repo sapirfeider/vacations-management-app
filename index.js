@@ -41,4 +41,4 @@ api.use((error, req, res, next) => {
     return res.status(status).send(errorMessage)
 })
 
-api.listen(5000, () => { console.log("server start listen to port 5000") })
+api.listen(process.env.PORT , () => { console.log("server start listen to port 5000") })
