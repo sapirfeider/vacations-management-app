@@ -8,7 +8,7 @@ const api = express();
 // api.use(cors());
 const path = require('path');
 const getConnection = require("./database/connectDB")
-const { getVacations , getCategories } = require("./controllers/actionsByUser")
+const { getVacations } = require("./controllers/actionsByUser")
 
 global.__basedir = __dirname;
 
@@ -19,7 +19,7 @@ api.use(async (req, res, next) => {
     await initConnection();
     if (global.connection) {
         try {
-            const vacations = await getCategories()
+            const vacations = await getVacations(2)
             res.status(200).send(vacations)
         } catch (ex) {
             console.log(ex)
