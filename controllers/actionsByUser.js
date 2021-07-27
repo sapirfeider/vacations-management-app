@@ -1,6 +1,13 @@
 const getConnection = require("../database/connectDB")
 require("dotenv").config()
 
+async function getCategories() {
+
+    //const connection = await getConnection();
+    const [rows] = await global.connection.execute(`SELECT * FROM ${process.env.SCHEMA}.category;`)
+    return rows
+}
+
 async function getVacations(user_id) {
     const getVacationsQuery = `SELECT 
     ${process.env.SCHEMA}.vacations_list.id , ${process.env.SCHEMA}.vacations_list.destination, ${process.env.SCHEMA}.vacations_list.description,
@@ -59,4 +66,4 @@ async function vacationsByDate() {
 }
 
 
-module.exports = { getVacations, vacationsByDate, followVacation, updateFollowersCounterUp, unfollowVacation, updateFollowersCounterDown }
+module.exports = { getCategories ,getVacations, vacationsByDate, followVacation, updateFollowersCounterUp, unfollowVacation, updateFollowersCounterDown }
