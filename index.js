@@ -8,22 +8,27 @@ const api = express();
 // api.use(cors());
 const path = require('path');
 const getConnection = require("./database/connectDB")
-const {getVacations} = require("./controllers/actionsByUser")
+const { getVacations } = require("./controllers/actionsByUser")
 
 global.__basedir = __dirname;
 
 
 
-api.use( async(req,res,next)=>{
+api.use(async (req, res, next) => {
     console.log(global.connection)
     await initConnection();
-    if(global.connection){
-        const vacations = await getVacations(2)
-        res.status(200).send(vacations)
-    } 
+    if (global.connection) {
+        try {
+            const vacations = await getVacations(2)
+            res.status(200).send(vacations)
+        } catch (ex) {
+            console.log(ex)
+            return next({ message: ex, status: 400 })
+        }
+    }
 })
 
-async function initConnection(){
+async function initConnection() {
     global.connection = await getConnection();
 }
 
@@ -49,7 +54,7 @@ api.use("/vacations", vacationsRoute)
 
 api.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
+});
 
 
 api.use((error, req, res, next) => {
@@ -59,4 +64,4 @@ api.use((error, req, res, next) => {
     return res.status(status).send(errorMessage)
 })
 
-api.listen(process.env.PORT , () => { console.log("server start listen to port 5000") })
+api.listen(process.env.PORT, () => { console.log("server start listen to port 5000") })
