@@ -11,7 +11,12 @@ const getConnection = require("./database/connectDB")
 
 global.__basedir = __dirname;
 
-initConnection()
+
+
+api.use( async(req,res,next)=>{
+    await initConnection();
+    if(global.connection) res.status(200).send("connection success!")
+})
 
 async function initConnection(){
     global.connection = await getConnection();
