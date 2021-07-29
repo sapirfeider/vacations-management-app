@@ -12,22 +12,8 @@ const { getVacations , getCategories} = require("./controllers/actionsByUser")
 
 global.__basedir = __dirname;
 
-//initConnection()
+initConnection()
 
-api.use(async (req, res, next) => {
-    //res.send(global.connection)
-    await initConnection();
-    if (global.connection) {
-        try {
-            //const vacations = await getVacations(2)
-            //const vacations = await getCategories()
-            res.status(200).send("success")
-        } catch (ex) {
-            console.log(ex)
-            return next({ message: ex, status: 400 })
-        }
-    }
-})
 
 async function initConnection() {
     global.connection = await getConnection();
