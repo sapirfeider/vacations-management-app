@@ -12,10 +12,10 @@ const { getVacations } = require("./controllers/actionsByUser")
 
 global.__basedir = __dirname;
 
-
+//initConnection()
 
 api.use(async (req, res, next) => {
-    console.log(global.connection)
+    //res.send(global.connection)
     await initConnection();
     if (global.connection) {
         try {
@@ -40,6 +40,7 @@ api.use(express.static(path.join(__dirname, 'build')));
 api.get("/check", (req, res, next) => {
     return res.send("check success!")
 })
+
 
 api.use("/auth", loginRoute)
 api.use("/vacations", vacationsRoute)
