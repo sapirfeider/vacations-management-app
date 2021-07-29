@@ -20,8 +20,8 @@ api.use(async (req, res, next) => {
     if (global.connection) {
         try {
             //const vacations = await getVacations(2)
-            const vacations = await getCategories()
-            res.status(200).send(vacations)
+            //const vacations = await getCategories()
+            res.status(200).send("success")
         } catch (ex) {
             console.log(ex)
             return next({ message: ex, status: 400 })
