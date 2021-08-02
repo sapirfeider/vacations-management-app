@@ -1,23 +1,8 @@
 const express = require("express")
 const route = express.Router();
-const getConnection = require("../../database/connectDB")
-const { verifyToken } = require("../../controllers/jwt")
 const ValidationActions = require("../../validation/validationVacationActions")
 const { getVacations, vacationsByDate, followVacation, updateFollowersCounterUp, unfollowVacation, updateFollowersCounterDown } = require("../../controllers/actionsByUser")
 const { addVacaction, deleteVacation, updateVacation } = require("../../controllers/actionsByAdmin")
-
-// route.use(async (req, res, next) => {
-//     try {
-//         console.log(req.cookies)
-//         const clientToken = req.cookies.token
-//         const verify = await verifyToken(clientToken)
-//         console.log("verify", verify)
-//         if (verify) return next()
-
-//     } catch (err) {
-//         return next(err)
-//     }
-// })
 
 route.post("/getUserFollowing", async (req, res, next) => {
     const { user_id } = req.body
@@ -52,7 +37,7 @@ route.post("/follow", ValidationActions("followingParams"), async (req, res, nex
         if (!result) throw new Error("follow vaction failed")
         const updateResult = await updateFollowersCounterUp(vacation_id);
         if (!updateResult) throw new Error("update counter failed")
-        return res.json({ "message": "follow action success" })
+        return res.json({ message: "follow action success" })
 
     } catch (error) {
         console.log(error)
@@ -67,7 +52,7 @@ route.post("/unfollow", ValidationActions("followingParams"), async (req, res, n
         if (!result) throw new Error("unfollow vaction failed")
         const updateResult = await updateFollowersCounterDown(vacation_id);
         if (!updateResult) throw new Error("update counter failed")
-        return res.json({ "message": "unfollow action success" })
+        return res.json({ message: "unfollow action success" })
 
     } catch (error) {
         console.log(error)
@@ -79,7 +64,7 @@ route.post("/add", ValidationActions("vacationDetails"), async (req, res, next) 
     try {
         const result = await addVacaction(req.body)
         if (!result) throw new Error("adding vacation failed")
-        return res.json({ "message": "adding vacation success" })
+        return res.json({ message: "adding vacation success" })
 
     } catch (error) {
         return next({ message: error, status: 400 })
@@ -92,7 +77,7 @@ route.post("/delete", async (req, res, next) => {
     try {
         const result = await deleteVacation(vacation_id)
         if (!result) throw new Error("deleting vacation failed")
-        return res.json({ "message": "deleting vacation success" })
+        return res.json({ message: "deleting vacation success" })
 
     } catch (error) {
         console.log(error)
@@ -104,7 +89,7 @@ route.post("/update", async (req, res, next) => {
     try {
         const result = await updateVacation(req.body)
         if (!result) throw new Error("updating vacation failed")
-        return res.json({ "message": "updating vacation success" })
+        return res.json({ message: "updating vacation success" })
 
     } catch (error) {
         console.log(error)

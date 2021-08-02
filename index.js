@@ -1,14 +1,17 @@
 const express = require("express")
 const bodyParser = require("body-parser")
-const cors = require("cors")
-const loginRoute = require("./routes/login/index")
+const cookieParser = require('cookie-parser');
+//const cors = require("cors")
+const loginRoute = require("./routes/auth/index")
 const vacationsRoute = require("./routes/vacations/index")
+const {hasToken} = require("./middleware/hasToken")
 require("dotenv").config()
 const api = express();
-// api.use(cors());
+//api.use(cors());
 const path = require('path');
+api.use(cookieParser()); // parser cookie -> req.cookies
+
 const getConnection = require("./database/connectDB")
-const { getVacations , getCategories} = require("./controllers/actionsByUser")
 
 global.__basedir = __dirname;
 
@@ -21,7 +24,6 @@ async function initConnection() {
 
 api.use(bodyParser.json())
 
-//api.use(express.static('./public'))
 api.use(express.static(path.join(__dirname, 'build')));
 
 api.get("/check", (req, res, next) => {
@@ -30,15 +32,7 @@ api.get("/check", (req, res, next) => {
 
 
 api.use("/auth", loginRoute)
-api.use("/vacations", vacationsRoute)
-
-// api.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, './build/index.js'), err => {
-//         if (err) {
-//             res.status(500).send(err)
-//         }
-//     })
-// });
+api.use("/vacations",hasToken, vacationsRoute)
 
 api.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
