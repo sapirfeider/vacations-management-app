@@ -24,7 +24,7 @@ async function initConnection() {
 
 api.use(bodyParser.json())
 
-api.use(express.static(path.join(__dirname, 'build')));
+api.use(express.static(path.join(__dirname, '/build')));
 
 api.get("/check", (req, res, next) => {
     return res.send("check success!")
