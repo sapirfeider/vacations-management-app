@@ -6,9 +6,10 @@ const schema_following_params = joi.object({
 })
 
 const schema_vacationDetails = joi.object({
+    hotel_name: joi.string().required(),
     description: joi.string().required(),
     destination: joi.string().required(),
-    image: joi.string().optional,
+    image: joi.string().optional(),
     check_in_date: joi.date().required(),
     check_out_date: joi.date().required(),
     price: joi.number().required()

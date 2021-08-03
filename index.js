@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 //const cors = require("cors")
 const loginRoute = require("./routes/auth/index")
 const vacationsRoute = require("./routes/vacations/index")
-const {hasToken} = require("./middleware/hasToken")
+const { hasToken } = require("./middleware/hasToken")
 require("dotenv").config()
 const api = express();
 //api.use(cors());
@@ -32,7 +32,7 @@ api.get("/check", (req, res, next) => {
 
 
 api.use("/auth", loginRoute)
-api.use("/vacations",hasToken, vacationsRoute)
+api.use("/vacations", hasToken, vacationsRoute)
 
 api.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));

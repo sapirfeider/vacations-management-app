@@ -3,7 +3,7 @@ const router = express.Router();
 const getValidationFunction = require("../../validation/validationAuth")
 const { isUserExist, registration } = require("../../controllers/login")
 const { getToken } = require("../../controllers/jwt")
-const {hasToken} = require("../../middleware/hasToken")
+const { hasToken } = require("../../middleware/hasToken")
 
 router.post("/login", getValidationFunction("login"), async (req, res, next) => {
     const { user_name, password } = req.body;
@@ -12,10 +12,10 @@ router.post("/login", getValidationFunction("login"), async (req, res, next) => 
         if (result) {
             const token = await getToken(user_name)
             if (token) {
-                res.cookie("token", token, 
-                {
-                    httpOnly: true,
-                });
+                res.cookie("token", token,
+                    {
+                        httpOnly: true,
+                    });
                 return res.json({
                     message: `Hello ${result.first_name}, your login is success`, token,
                     role: result.role, id: result.id, name: result.first_name
@@ -52,7 +52,7 @@ router.post("/register", getValidationFunction("register"), async (req, res, nex
     }
 })
 
-router.get("/logout",hasToken, async (req, res, next) => {
+router.get("/logout", hasToken, async (req, res, next) => {
     try {
         res.cookie('token', null, {
             httpOnly: true,

@@ -1,8 +1,22 @@
 const express = require("express")
 const route = express.Router();
 const ValidationActions = require("../../validation/validationVacationActions")
-const { getVacations, vacationsByDate, followVacation, updateFollowersCounterUp, unfollowVacation, updateFollowersCounterDown } = require("../../controllers/actionsByUser")
+const { searchAction, getVacations, vacationsByDate, followVacation, updateFollowersCounterUp, unfollowVacation, updateFollowersCounterDown } = require("../../controllers/actionsByUser")
 const { addVacaction, deleteVacation, updateVacation } = require("../../controllers/actionsByAdmin")
+
+route.post("/search", async (req, res, next) => {
+
+
+    try {
+        const result = await searchAction(req.body)
+        if (!result) throw new Error("something went wrong...")
+        return res.send(result)
+
+    } catch (error) {
+        console.log(error)
+        return next({ message: error, status: 400 })
+    }
+})
 
 route.post("/getUserFollowing", async (req, res, next) => {
     const { user_id } = req.body
