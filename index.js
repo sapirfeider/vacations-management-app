@@ -1,12 +1,18 @@
+require("dotenv").config()
 const express = require("express")
+const api = express();
+const http = require("http")
+const socket = require("socket.io")
+const server = http.createServer(api)
 const bodyParser = require("body-parser")
 const cookieParser = require('cookie-parser');
 //const cors = require("cors")
 const loginRoute = require("./routes/auth/index")
 const vacationsRoute = require("./routes/vacations/index")
 const { hasToken } = require("./middleware/hasToken")
-require("dotenv").config()
-const api = express();
+
+const socketCors = {cors:{origin:"*"}}
+
 //api.use(cors());
 const path = require('path');
 api.use(cookieParser()); // parser cookie -> req.cookies
@@ -16,7 +22,6 @@ const getConnection = require("./database/connectDB")
 global.__basedir = __dirname;
 
 initConnection()
-
 
 async function initConnection() {
     global.connection = await getConnection();
@@ -46,4 +51,13 @@ api.use((error, req, res, next) => {
     return res.status(status).send(errorMessage)
 })
 
-api.listen(process.env.PORT, () => { console.log("server start listen to port 5000") })
+const socketServer = new socket.Server(server, socketCors)
+socketServer.on("connection", (socket) => {
+    console.log("new connection is created...")
+    socket.emit("FromAPI" , "blablabla")
+
+})
+
+global.socket = socketServer;
+
+server.listen(process.env.PORT, () => { console.log(`server start listen to port ${process.env.PORT}`) })

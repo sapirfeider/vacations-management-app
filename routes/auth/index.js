@@ -32,6 +32,7 @@ router.post("/login", getValidationFunction("login"), async (req, res, next) => 
 
 router.post("/register", getValidationFunction("register"), async (req, res, next) => {
     const { user_name } = req.body;
+    
     try {
         const result = await isUserExist(user_name)
         if (result) throw new Error("user already exist")
