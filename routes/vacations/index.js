@@ -5,8 +5,6 @@ const { searchAction, getVacations, vacationsByDate, followVacation, updateFollo
 const { addVacaction, deleteVacation, updateVacation , deleteVacationFollowers } = require("../../controllers/actionsByAdmin")
 
 route.post("/search", async (req, res, next) => {
-
-
     try {
         const result = await searchAction(req.body)
         if (!result) throw new Error("something went wrong...")

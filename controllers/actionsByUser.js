@@ -47,10 +47,13 @@ async function vacationsByDate() {
 }
 
 async function searchAction(body) {
-    console.log(body)
     const { destination, check_in_date, check_out_date } = body
-    const searchQuery = `SELECT * FROM ${process.env.SCHEMA}.vacations_list where destination = ? and check_in_date = ? and check_out_date = ?`
-    const [rows] = await global.connection.execute(searchQuery, [destination, check_in_date, check_out_date])
+
+    const params = check_in_date ? [destination, check_in_date, check_out_date] : [destination]
+    const checkInQuery = check_in_date ? ` AND check_in_date = ? AND check_out_date = ?` : "";
+  
+    const searchQuery = `SELECT * FROM ${process.env.SCHEMA}.vacations_list where destination = ? ${checkInQuery}`
+    const [rows] = await global.connection.execute(searchQuery, params)
     return rows;
 }
 
